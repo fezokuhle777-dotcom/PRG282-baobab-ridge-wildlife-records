@@ -14,6 +14,7 @@ namespace BaobabRidge
 {
     public partial class Form1 : Form
     {
+        
         public Form1()
         {
             InitializeComponent();
@@ -163,11 +164,74 @@ namespace BaobabRidge
                     MessageBoxIcon.Error);
             }
         }
+       
+        // Deletes the selected animal from the file.
+        public void DeleteAnimal(string animalID, string animalName)
+        {
+            DialogResult answer = MessageBox.Show(
+                "Delete " + animalID + " (" + animalName +
+                ")? This cannot be undone.",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
+            if (answer != DialogResult.Yes) return;
+
+            try
+            {
+                List<string> lines = File.ReadAllLines(filePath, Encoding.UTF8).ToList();
+
+                int removed = lines.RemoveAll(line =>
+                    line.Split('|')[0].Trim().Equals(
+                        animalID, StringComparison.OrdinalIgnoreCase));
+
+                if (removed == 0)
+                {
+                    MessageBox.Show("Animal not found.");
+                    LoadAnimals();
+                    return;
+                }
+
+                File.WriteAllLines(filePath, lines, Encoding.UTF8);
+
+                LoadAnimals();
+
+                MessageBox.Show("Animal deleted successfully.");
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Animals.txt could not be read or saved. The file may be open in another program.");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Permission denied.");
+            }
+        }
+
+        // Refreshes the animal grid.
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadAnimals();
         }
 
+        // Deletes the selected animal after confirmation.
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvAnimals.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select an animal first.");
+                return;
+            }
+
+            string id = dgvAnimals.SelectedRows[0]
+                .Cells["AnimalID"].Value.ToString();
+
+            string name = dgvAnimals.SelectedRows[0]
+                .Cells["Name"].Value.ToString();
+
+            DeleteAnimal(id, name);
+        }
+
     }
 }
+
