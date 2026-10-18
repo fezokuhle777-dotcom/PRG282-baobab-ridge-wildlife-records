@@ -59,6 +59,14 @@
             this.lblTotalAnimals = new System.Windows.Forms.Label();
             this.dgvAnimals = new System.Windows.Forms.DataGridView();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.lblTotalAnimalsCaption = new System.Windows.Forms.Label();
+            this.lblAverageAgeCaption = new System.Windows.Forms.Label();
+            this.lblAverageScoreCaption = new System.Windows.Forms.Label();
+            this.lblReleaseReadyCaption = new System.Windows.Forms.Label();
+            this.lblRecoveringCaption = new System.Windows.Forms.Label();
+            this.lblStableCaption = new System.Windows.Forms.Label();
+            this.lblSeriousCaption = new System.Windows.Forms.Label();
+            this.lblCriticalCaption = new System.Windows.Forms.Label();
             this.grpAnimalDetails.SuspendLayout();
             this.grpFindAnimal.SuspendLayout();
             this.grpSummaryReport.SuspendLayout();
@@ -238,6 +246,14 @@
             // 
             // grpSummaryReport
             // 
+            this.grpSummaryReport.Controls.Add(this.lblCriticalCaption);
+            this.grpSummaryReport.Controls.Add(this.lblSeriousCaption);
+            this.grpSummaryReport.Controls.Add(this.lblStableCaption);
+            this.grpSummaryReport.Controls.Add(this.lblRecoveringCaption);
+            this.grpSummaryReport.Controls.Add(this.lblReleaseReadyCaption);
+            this.grpSummaryReport.Controls.Add(this.lblAverageScoreCaption);
+            this.grpSummaryReport.Controls.Add(this.lblAverageAgeCaption);
+            this.grpSummaryReport.Controls.Add(this.lblTotalAnimalsCaption);
             this.grpSummaryReport.Controls.Add(this.btnGenerateSummary);
             this.grpSummaryReport.Controls.Add(this.lblCritical);
             this.grpSummaryReport.Controls.Add(this.lblReleaseReady);
@@ -366,6 +382,78 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // lblTotalAnimalsCaption
+            // 
+            this.lblTotalAnimalsCaption.AutoSize = true;
+            this.lblTotalAnimalsCaption.Location = new System.Drawing.Point(140, 69);
+            this.lblTotalAnimalsCaption.Name = "lblTotalAnimalsCaption";
+            this.lblTotalAnimalsCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblTotalAnimalsCaption.TabIndex = 11;
+            this.lblTotalAnimalsCaption.Text = "0";
+            // 
+            // lblAverageAgeCaption
+            // 
+            this.lblAverageAgeCaption.AutoSize = true;
+            this.lblAverageAgeCaption.Location = new System.Drawing.Point(140, 105);
+            this.lblAverageAgeCaption.Name = "lblAverageAgeCaption";
+            this.lblAverageAgeCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblAverageAgeCaption.TabIndex = 12;
+            this.lblAverageAgeCaption.Text = "0";
+            // 
+            // lblAverageScoreCaption
+            // 
+            this.lblAverageScoreCaption.AutoSize = true;
+            this.lblAverageScoreCaption.Location = new System.Drawing.Point(140, 135);
+            this.lblAverageScoreCaption.Name = "lblAverageScoreCaption";
+            this.lblAverageScoreCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblAverageScoreCaption.TabIndex = 13;
+            this.lblAverageScoreCaption.Text = "0";
+            // 
+            // lblReleaseReadyCaption
+            // 
+            this.lblReleaseReadyCaption.AutoSize = true;
+            this.lblReleaseReadyCaption.Location = new System.Drawing.Point(430, 135);
+            this.lblReleaseReadyCaption.Name = "lblReleaseReadyCaption";
+            this.lblReleaseReadyCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblReleaseReadyCaption.TabIndex = 14;
+            this.lblReleaseReadyCaption.Text = "0";
+            // 
+            // lblRecoveringCaption
+            // 
+            this.lblRecoveringCaption.AutoSize = true;
+            this.lblRecoveringCaption.Location = new System.Drawing.Point(430, 105);
+            this.lblRecoveringCaption.Name = "lblRecoveringCaption";
+            this.lblRecoveringCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblRecoveringCaption.TabIndex = 15;
+            this.lblRecoveringCaption.Text = "0";
+            // 
+            // lblStableCaption
+            // 
+            this.lblStableCaption.AutoSize = true;
+            this.lblStableCaption.Location = new System.Drawing.Point(430, 75);
+            this.lblStableCaption.Name = "lblStableCaption";
+            this.lblStableCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblStableCaption.TabIndex = 16;
+            this.lblStableCaption.Text = "0";
+            // 
+            // lblSeriousCaption
+            // 
+            this.lblSeriousCaption.AutoSize = true;
+            this.lblSeriousCaption.Location = new System.Drawing.Point(430, 48);
+            this.lblSeriousCaption.Name = "lblSeriousCaption";
+            this.lblSeriousCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblSeriousCaption.TabIndex = 17;
+            this.lblSeriousCaption.Text = "0";
+            // 
+            // lblCriticalCaption
+            // 
+            this.lblCriticalCaption.AutoSize = true;
+            this.lblCriticalCaption.Location = new System.Drawing.Point(430, 21);
+            this.lblCriticalCaption.Name = "lblCriticalCaption";
+            this.lblCriticalCaption.Size = new System.Drawing.Size(16, 18);
+            this.lblCriticalCaption.TabIndex = 18;
+            this.lblCriticalCaption.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -425,6 +513,14 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtAnimalId;
         private System.Windows.Forms.TextBox txtSearchId;
+        private System.Windows.Forms.Label lblCriticalCaption;
+        private System.Windows.Forms.Label lblSeriousCaption;
+        private System.Windows.Forms.Label lblStableCaption;
+        private System.Windows.Forms.Label lblRecoveringCaption;
+        private System.Windows.Forms.Label lblReleaseReadyCaption;
+        private System.Windows.Forms.Label lblAverageScoreCaption;
+        private System.Windows.Forms.Label lblAverageAgeCaption;
+        private System.Windows.Forms.Label lblTotalAnimalsCaption;
     }
 }
 
