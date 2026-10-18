@@ -1,0 +1,8 @@
+﻿WR-0001|Thabo|African Penguin|4|85
+WR-0002|Naledi|Serval|3|62
+WR-0003|Simba|Lion|8|35
+WR-0004|Zola|Cape Vulture|12|19
+WR-0005|Lebo|Zebra|5|48
+WR-0006|Milo|Meerkat|2|90
+WR-0007|Kaya|Cheetah|6|72
+WR-0008|Tumi|Elephant|15|25
