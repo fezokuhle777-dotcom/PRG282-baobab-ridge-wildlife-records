@@ -164,7 +164,6 @@ namespace BaobabRidge
                     MessageBoxIcon.Error);
             }
         }
-       
         // Deletes the selected animal from the file.
         public void DeleteAnimal(string animalID, string animalName)
         {
@@ -231,7 +230,6 @@ namespace BaobabRidge
 
             DeleteAnimal(id, name);
         }
-
     }
 }
 
