@@ -48,6 +48,14 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblSearchId = new System.Windows.Forms.Label();
             this.grpSummaryReport = new System.Windows.Forms.GroupBox();
+            this.lblCriticalCaption = new System.Windows.Forms.Label();
+            this.lblSeriousCaption = new System.Windows.Forms.Label();
+            this.lblStableCaption = new System.Windows.Forms.Label();
+            this.lblRecoveringCaption = new System.Windows.Forms.Label();
+            this.lblReleaseReadyCaption = new System.Windows.Forms.Label();
+            this.lblAverageScoreCaption = new System.Windows.Forms.Label();
+            this.lblAverageAgeCaption = new System.Windows.Forms.Label();
+            this.lblTotalAnimalsCaption = new System.Windows.Forms.Label();
             this.btnGenerateSummary = new System.Windows.Forms.Button();
             this.lblCritical = new System.Windows.Forms.Label();
             this.lblReleaseReady = new System.Windows.Forms.Label();
@@ -59,14 +67,6 @@
             this.lblTotalAnimals = new System.Windows.Forms.Label();
             this.dgvAnimals = new System.Windows.Forms.DataGridView();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.lblTotalAnimalsCaption = new System.Windows.Forms.Label();
-            this.lblAverageAgeCaption = new System.Windows.Forms.Label();
-            this.lblAverageScoreCaption = new System.Windows.Forms.Label();
-            this.lblReleaseReadyCaption = new System.Windows.Forms.Label();
-            this.lblRecoveringCaption = new System.Windows.Forms.Label();
-            this.lblStableCaption = new System.Windows.Forms.Label();
-            this.lblSeriousCaption = new System.Windows.Forms.Label();
-            this.lblCriticalCaption = new System.Windows.Forms.Label();
             this.grpAnimalDetails.SuspendLayout();
             this.grpFindAnimal.SuspendLayout();
             this.grpSummaryReport.SuspendLayout();
@@ -101,35 +101,35 @@
             // 
             this.txtAge.Location = new System.Drawing.Point(213, 139);
             this.txtAge.Name = "txtAge";
-            this.txtAge.Size = new System.Drawing.Size(229, 24);
+            this.txtAge.Size = new System.Drawing.Size(229, 28);
             this.txtAge.TabIndex = 12;
             // 
             // txtRecoveryScore
             // 
             this.txtRecoveryScore.Location = new System.Drawing.Point(213, 181);
             this.txtRecoveryScore.Name = "txtRecoveryScore";
-            this.txtRecoveryScore.Size = new System.Drawing.Size(229, 24);
+            this.txtRecoveryScore.Size = new System.Drawing.Size(229, 28);
             this.txtRecoveryScore.TabIndex = 11;
             // 
             // txtSpecies
             // 
             this.txtSpecies.Location = new System.Drawing.Point(213, 108);
             this.txtSpecies.Name = "txtSpecies";
-            this.txtSpecies.Size = new System.Drawing.Size(229, 24);
+            this.txtSpecies.Size = new System.Drawing.Size(229, 28);
             this.txtSpecies.TabIndex = 10;
             // 
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(213, 70);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(229, 24);
+            this.txtName.Size = new System.Drawing.Size(229, 28);
             this.txtName.TabIndex = 9;
             // 
             // txtAnimalId
             // 
             this.txtAnimalId.Location = new System.Drawing.Point(213, 32);
             this.txtAnimalId.Name = "txtAnimalId";
-            this.txtAnimalId.Size = new System.Drawing.Size(229, 24);
+            this.txtAnimalId.Size = new System.Drawing.Size(229, 28);
             this.txtAnimalId.TabIndex = 8;
             // 
             // btnClear
@@ -159,13 +159,14 @@
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // lblRecoveryScore
             // 
             this.lblRecoveryScore.AutoSize = true;
             this.lblRecoveryScore.Location = new System.Drawing.Point(47, 184);
             this.lblRecoveryScore.Name = "lblRecoveryScore";
-            this.lblRecoveryScore.Size = new System.Drawing.Size(119, 18);
+            this.lblRecoveryScore.Size = new System.Drawing.Size(143, 22);
             this.lblRecoveryScore.TabIndex = 4;
             this.lblRecoveryScore.Text = "Recovery Score:";
             // 
@@ -174,7 +175,7 @@
             this.lblAge.AutoSize = true;
             this.lblAge.Location = new System.Drawing.Point(47, 142);
             this.lblAge.Name = "lblAge";
-            this.lblAge.Size = new System.Drawing.Size(37, 18);
+            this.lblAge.Size = new System.Drawing.Size(47, 22);
             this.lblAge.TabIndex = 3;
             this.lblAge.Text = "Age:";
             // 
@@ -183,7 +184,7 @@
             this.lblSpecies.AutoSize = true;
             this.lblSpecies.Location = new System.Drawing.Point(47, 111);
             this.lblSpecies.Name = "lblSpecies";
-            this.lblSpecies.Size = new System.Drawing.Size(65, 18);
+            this.lblSpecies.Size = new System.Drawing.Size(79, 22);
             this.lblSpecies.TabIndex = 2;
             this.lblSpecies.Text = "Species:";
             // 
@@ -192,7 +193,7 @@
             this.lblName.AutoSize = true;
             this.lblName.Location = new System.Drawing.Point(47, 73);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(52, 18);
+            this.lblName.Size = new System.Drawing.Size(62, 22);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Name:";
             // 
@@ -201,7 +202,7 @@
             this.lblAnimalId.AutoSize = true;
             this.lblAnimalId.Location = new System.Drawing.Point(47, 35);
             this.lblAnimalId.Name = "lblAnimalId";
-            this.lblAnimalId.Size = new System.Drawing.Size(74, 18);
+            this.lblAnimalId.Size = new System.Drawing.Size(91, 22);
             this.lblAnimalId.TabIndex = 0;
             this.lblAnimalId.Text = "Animal ID:";
             // 
@@ -223,7 +224,7 @@
             // 
             this.txtSearchId.Location = new System.Drawing.Point(120, 48);
             this.txtSearchId.Name = "txtSearchId";
-            this.txtSearchId.Size = new System.Drawing.Size(229, 24);
+            this.txtSearchId.Size = new System.Drawing.Size(229, 28);
             this.txtSearchId.TabIndex = 13;
             // 
             // btnSearch
@@ -240,7 +241,7 @@
             this.lblSearchId.AutoSize = true;
             this.lblSearchId.Location = new System.Drawing.Point(25, 48);
             this.lblSearchId.Name = "lblSearchId";
-            this.lblSearchId.Size = new System.Drawing.Size(74, 18);
+            this.lblSearchId.Size = new System.Drawing.Size(91, 22);
             this.lblSearchId.TabIndex = 5;
             this.lblSearchId.Text = "Animal ID:";
             // 
@@ -272,6 +273,78 @@
             this.grpSummaryReport.TabStop = false;
             this.grpSummaryReport.Text = "Summary Report";
             // 
+            // lblCriticalCaption
+            // 
+            this.lblCriticalCaption.AutoSize = true;
+            this.lblCriticalCaption.Location = new System.Drawing.Point(430, 21);
+            this.lblCriticalCaption.Name = "lblCriticalCaption";
+            this.lblCriticalCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblCriticalCaption.TabIndex = 18;
+            this.lblCriticalCaption.Text = "0";
+            // 
+            // lblSeriousCaption
+            // 
+            this.lblSeriousCaption.AutoSize = true;
+            this.lblSeriousCaption.Location = new System.Drawing.Point(430, 48);
+            this.lblSeriousCaption.Name = "lblSeriousCaption";
+            this.lblSeriousCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblSeriousCaption.TabIndex = 17;
+            this.lblSeriousCaption.Text = "0";
+            // 
+            // lblStableCaption
+            // 
+            this.lblStableCaption.AutoSize = true;
+            this.lblStableCaption.Location = new System.Drawing.Point(430, 75);
+            this.lblStableCaption.Name = "lblStableCaption";
+            this.lblStableCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblStableCaption.TabIndex = 16;
+            this.lblStableCaption.Text = "0";
+            // 
+            // lblRecoveringCaption
+            // 
+            this.lblRecoveringCaption.AutoSize = true;
+            this.lblRecoveringCaption.Location = new System.Drawing.Point(430, 105);
+            this.lblRecoveringCaption.Name = "lblRecoveringCaption";
+            this.lblRecoveringCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblRecoveringCaption.TabIndex = 15;
+            this.lblRecoveringCaption.Text = "0";
+            // 
+            // lblReleaseReadyCaption
+            // 
+            this.lblReleaseReadyCaption.AutoSize = true;
+            this.lblReleaseReadyCaption.Location = new System.Drawing.Point(430, 135);
+            this.lblReleaseReadyCaption.Name = "lblReleaseReadyCaption";
+            this.lblReleaseReadyCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblReleaseReadyCaption.TabIndex = 14;
+            this.lblReleaseReadyCaption.Text = "0";
+            // 
+            // lblAverageScoreCaption
+            // 
+            this.lblAverageScoreCaption.AutoSize = true;
+            this.lblAverageScoreCaption.Location = new System.Drawing.Point(140, 135);
+            this.lblAverageScoreCaption.Name = "lblAverageScoreCaption";
+            this.lblAverageScoreCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblAverageScoreCaption.TabIndex = 13;
+            this.lblAverageScoreCaption.Text = "0";
+            // 
+            // lblAverageAgeCaption
+            // 
+            this.lblAverageAgeCaption.AutoSize = true;
+            this.lblAverageAgeCaption.Location = new System.Drawing.Point(140, 105);
+            this.lblAverageAgeCaption.Name = "lblAverageAgeCaption";
+            this.lblAverageAgeCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblAverageAgeCaption.TabIndex = 12;
+            this.lblAverageAgeCaption.Text = "0";
+            // 
+            // lblTotalAnimalsCaption
+            // 
+            this.lblTotalAnimalsCaption.AutoSize = true;
+            this.lblTotalAnimalsCaption.Location = new System.Drawing.Point(140, 69);
+            this.lblTotalAnimalsCaption.Name = "lblTotalAnimalsCaption";
+            this.lblTotalAnimalsCaption.Size = new System.Drawing.Size(20, 22);
+            this.lblTotalAnimalsCaption.TabIndex = 11;
+            this.lblTotalAnimalsCaption.Text = "0";
+            // 
             // btnGenerateSummary
             // 
             this.btnGenerateSummary.Location = new System.Drawing.Point(17, 24);
@@ -286,7 +359,7 @@
             this.lblCritical.AutoSize = true;
             this.lblCritical.Location = new System.Drawing.Point(317, 21);
             this.lblCritical.Name = "lblCritical";
-            this.lblCritical.Size = new System.Drawing.Size(57, 18);
+            this.lblCritical.Size = new System.Drawing.Size(70, 22);
             this.lblCritical.TabIndex = 10;
             this.lblCritical.Text = "Critical:";
             // 
@@ -295,7 +368,7 @@
             this.lblReleaseReady.AutoSize = true;
             this.lblReleaseReady.Location = new System.Drawing.Point(317, 135);
             this.lblReleaseReady.Name = "lblReleaseReady";
-            this.lblReleaseReady.Size = new System.Drawing.Size(107, 18);
+            this.lblReleaseReady.Size = new System.Drawing.Size(132, 22);
             this.lblReleaseReady.TabIndex = 9;
             this.lblReleaseReady.Text = "Release-ready:";
             // 
@@ -304,7 +377,7 @@
             this.lblRecovering.AutoSize = true;
             this.lblRecovering.Location = new System.Drawing.Point(317, 105);
             this.lblRecovering.Name = "lblRecovering";
-            this.lblRecovering.Size = new System.Drawing.Size(83, 18);
+            this.lblRecovering.Size = new System.Drawing.Size(101, 22);
             this.lblRecovering.TabIndex = 8;
             this.lblRecovering.Text = "Recovering";
             // 
@@ -313,7 +386,7 @@
             this.lblStable.AutoSize = true;
             this.lblStable.Location = new System.Drawing.Point(317, 75);
             this.lblStable.Name = "lblStable";
-            this.lblStable.Size = new System.Drawing.Size(53, 18);
+            this.lblStable.Size = new System.Drawing.Size(66, 22);
             this.lblStable.TabIndex = 7;
             this.lblStable.Text = "Stable:";
             // 
@@ -322,7 +395,7 @@
             this.lblSerious.AutoSize = true;
             this.lblSerious.Location = new System.Drawing.Point(317, 48);
             this.lblSerious.Name = "lblSerious";
-            this.lblSerious.Size = new System.Drawing.Size(63, 18);
+            this.lblSerious.Size = new System.Drawing.Size(76, 22);
             this.lblSerious.TabIndex = 6;
             this.lblSerious.Text = "Serious:";
             // 
@@ -331,7 +404,7 @@
             this.lblAverageScore.AutoSize = true;
             this.lblAverageScore.Location = new System.Drawing.Point(25, 135);
             this.lblAverageScore.Name = "lblAverageScore";
-            this.lblAverageScore.Size = new System.Drawing.Size(109, 18);
+            this.lblAverageScore.Size = new System.Drawing.Size(134, 22);
             this.lblAverageScore.TabIndex = 5;
             this.lblAverageScore.Text = "Average Score:";
             // 
@@ -340,7 +413,7 @@
             this.lblAverageAge.AutoSize = true;
             this.lblAverageAge.Location = new System.Drawing.Point(25, 105);
             this.lblAverageAge.Name = "lblAverageAge";
-            this.lblAverageAge.Size = new System.Drawing.Size(94, 18);
+            this.lblAverageAge.Size = new System.Drawing.Size(119, 22);
             this.lblAverageAge.TabIndex = 4;
             this.lblAverageAge.Text = "Average Age:";
             // 
@@ -349,7 +422,7 @@
             this.lblTotalAnimals.AutoSize = true;
             this.lblTotalAnimals.Location = new System.Drawing.Point(25, 75);
             this.lblTotalAnimals.Name = "lblTotalAnimals";
-            this.lblTotalAnimals.Size = new System.Drawing.Size(101, 18);
+            this.lblTotalAnimals.Size = new System.Drawing.Size(124, 22);
             this.lblTotalAnimals.TabIndex = 3;
             this.lblTotalAnimals.Text = "Total Animals:";
             // 
@@ -382,81 +455,9 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // lblTotalAnimalsCaption
-            // 
-            this.lblTotalAnimalsCaption.AutoSize = true;
-            this.lblTotalAnimalsCaption.Location = new System.Drawing.Point(140, 69);
-            this.lblTotalAnimalsCaption.Name = "lblTotalAnimalsCaption";
-            this.lblTotalAnimalsCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblTotalAnimalsCaption.TabIndex = 11;
-            this.lblTotalAnimalsCaption.Text = "0";
-            // 
-            // lblAverageAgeCaption
-            // 
-            this.lblAverageAgeCaption.AutoSize = true;
-            this.lblAverageAgeCaption.Location = new System.Drawing.Point(140, 105);
-            this.lblAverageAgeCaption.Name = "lblAverageAgeCaption";
-            this.lblAverageAgeCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblAverageAgeCaption.TabIndex = 12;
-            this.lblAverageAgeCaption.Text = "0";
-            // 
-            // lblAverageScoreCaption
-            // 
-            this.lblAverageScoreCaption.AutoSize = true;
-            this.lblAverageScoreCaption.Location = new System.Drawing.Point(140, 135);
-            this.lblAverageScoreCaption.Name = "lblAverageScoreCaption";
-            this.lblAverageScoreCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblAverageScoreCaption.TabIndex = 13;
-            this.lblAverageScoreCaption.Text = "0";
-            // 
-            // lblReleaseReadyCaption
-            // 
-            this.lblReleaseReadyCaption.AutoSize = true;
-            this.lblReleaseReadyCaption.Location = new System.Drawing.Point(430, 135);
-            this.lblReleaseReadyCaption.Name = "lblReleaseReadyCaption";
-            this.lblReleaseReadyCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblReleaseReadyCaption.TabIndex = 14;
-            this.lblReleaseReadyCaption.Text = "0";
-            // 
-            // lblRecoveringCaption
-            // 
-            this.lblRecoveringCaption.AutoSize = true;
-            this.lblRecoveringCaption.Location = new System.Drawing.Point(430, 105);
-            this.lblRecoveringCaption.Name = "lblRecoveringCaption";
-            this.lblRecoveringCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblRecoveringCaption.TabIndex = 15;
-            this.lblRecoveringCaption.Text = "0";
-            // 
-            // lblStableCaption
-            // 
-            this.lblStableCaption.AutoSize = true;
-            this.lblStableCaption.Location = new System.Drawing.Point(430, 75);
-            this.lblStableCaption.Name = "lblStableCaption";
-            this.lblStableCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblStableCaption.TabIndex = 16;
-            this.lblStableCaption.Text = "0";
-            // 
-            // lblSeriousCaption
-            // 
-            this.lblSeriousCaption.AutoSize = true;
-            this.lblSeriousCaption.Location = new System.Drawing.Point(430, 48);
-            this.lblSeriousCaption.Name = "lblSeriousCaption";
-            this.lblSeriousCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblSeriousCaption.TabIndex = 17;
-            this.lblSeriousCaption.Text = "0";
-            // 
-            // lblCriticalCaption
-            // 
-            this.lblCriticalCaption.AutoSize = true;
-            this.lblCriticalCaption.Location = new System.Drawing.Point(430, 21);
-            this.lblCriticalCaption.Name = "lblCriticalCaption";
-            this.lblCriticalCaption.Size = new System.Drawing.Size(16, 18);
-            this.lblCriticalCaption.TabIndex = 18;
-            this.lblCriticalCaption.Text = "0";
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1354, 673);
             this.Controls.Add(this.btnDelete);
