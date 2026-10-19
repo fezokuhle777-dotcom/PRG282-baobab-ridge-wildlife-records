@@ -16,7 +16,7 @@ namespace BaobabRidge
         public string Status { get; set; }
         public string HousingUnit { get; set; }
 
-        // Converts the animal into one pipe-separated line for animals.txt.
+        // Converts the animal into one seperated line for animals.txt.
         public string ToFileLine()
         {
             return string.Join("|", AnimalID, Name, Species, Age, RecoveryScore, Status, HousingUnit);
