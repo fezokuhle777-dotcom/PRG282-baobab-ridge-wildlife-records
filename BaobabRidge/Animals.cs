@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaobabRidge
 {
-    class Animals
+    public class Animal
     {
         public string AnimalID { get; set; } = "";
         public string Name { get; set; } = "";
