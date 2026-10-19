@@ -194,6 +194,12 @@ namespace BaobabRidge
 
                 File.WriteAllLines(filePath, lines, Encoding.UTF8);
 
+                if (txtAnimalId.Text.Trim().Equals(
+                    animalID, StringComparison.OrdinalIgnoreCase))
+                {
+                    ClearInputs();
+                }
+
                 LoadAnimals();
 
                 MessageBox.Show("Animal deleted successfully.");
