@@ -62,9 +62,9 @@ namespace BaobabRidge
         }
 
         // 5. File reading method
-        private List<Animals> ReadAnimals(out int skippedLines)
+        private List<Animal> ReadAnimals(out int skippedLines)
         {
-            List<Animals> animals = new List<Animals>();
+            List<Animal> animals = new List<Animal>();
             skippedLines = 0;
 
             if (!File.Exists(filePath))
@@ -105,7 +105,7 @@ namespace BaobabRidge
                     continue;
                 }
 
-                Animals animal = new Animals
+                Animal animal = new Animal
                 {
                     AnimalID = id,
                     Name = fields[1],
@@ -127,7 +127,7 @@ namespace BaobabRidge
             {
                 int skippedLines;
 
-                List<Animals> animals =
+                List<Animal> animals =
                     ReadAnimals(out skippedLines);
 
                 // Clear the old data before displaying new records.

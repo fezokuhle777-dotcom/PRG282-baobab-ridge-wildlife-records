@@ -49,6 +49,7 @@
     <Compile Include="AnimalClassifier.cs" />
     <Compile Include="Animals.cs" />
     <Compile Include="AnimalValidator.cs" />
+    <Compile Include="FileHandler.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
