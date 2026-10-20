@@ -611,6 +611,49 @@ namespace BaobabRidge
             else
                 MessageBox.Show("Summary saved to summary.txt.", "Summary", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void btnSearch_Click_1(object sender, EventArgs e)
+        {
+            string id = txtSearchId.Text.Trim();
+
+            if (id.Length == 0)
+            {
+                MessageBox.Show(
+                    "Please enter an Animal ID to search for.");
+                return;
+            }
+
+            try
+            {
+                List<Animal> animals = ReadAnimals(out _);
+
+                Animal match = animals.FirstOrDefault(a =>
+                    a.AnimalID.Equals(
+                        id, StringComparison.OrdinalIgnoreCase));
+
+                if (match == null)
+                {
+                    MessageBox.Show(
+                        "No animal found with ID \"" + id + "\".",
+                        "Not Found",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    return;
+                }
+
+                LoadForEdit(match);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Permission denied.");
+            }
+            catch (IOException)
+            {
+                MessageBox.Show(
+                    "Unable to read animals.txt. The file may be in use.");
+            }
+        }
     }
     
 }
