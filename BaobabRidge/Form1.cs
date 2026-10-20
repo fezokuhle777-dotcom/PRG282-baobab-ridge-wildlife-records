@@ -62,9 +62,9 @@ namespace BaobabRidge
         }
 
         // 5. File reading method
-        private List<Animals> ReadAnimals(out int skippedLines)
+        private List<Animal> ReadAnimals(out int skippedLines)
         {
-            List<Animals> animals = new List<Animals>();
+            List<Animal> animals = new List<Animal>();
             skippedLines = 0;
 
             if (!File.Exists(filePath))
@@ -105,7 +105,7 @@ namespace BaobabRidge
                     continue;
                 }
 
-                Animals animal = new Animals
+                Animal animal = new Animal
                 {
                     AnimalID = id,
                     Name = fields[1],
@@ -127,7 +127,7 @@ namespace BaobabRidge
             {
                 int skippedLines;
 
-                List<Animals> animals =
+                List<Animal> animals =
                     ReadAnimals(out skippedLines);
 
                 // Clear the old data before displaying new records.
@@ -194,6 +194,12 @@ namespace BaobabRidge
 
                 File.WriteAllLines(filePath, lines, Encoding.UTF8);
 
+                if (txtAnimalId.Text.Trim().Equals(
+                    animalID, StringComparison.OrdinalIgnoreCase))
+                {
+                    ClearInputs();
+                }
+
                 LoadAnimals();
 
                 MessageBox.Show("Animal deleted successfully.");
@@ -206,6 +212,17 @@ namespace BaobabRidge
             {
                 MessageBox.Show("Permission denied.");
             }
+        }
+
+        // Empties the five input boxes and puts the cursor back in the Animal ID box.
+        private void ClearInputs()
+        {
+            txtAnimalId.Clear();
+            txtName.Clear();
+            txtSpecies.Clear();
+            txtAge.Clear();
+            txtRecoveryScore.Clear();
+            txtAnimalId.Focus();
         }
 
         // Refreshes the animal grid.
@@ -232,6 +249,52 @@ namespace BaobabRidge
             DeleteAnimal(id, name);
         }
 
+        //validates the input and adds a new animal to the file.
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (!AnimalValidator.TryCreateAnimal(txtAnimalId.Text, txtName.Text, txtSpecies.Text,
+           txtAge.Text, txtRecoveryScore.Text,
+           out Animal animal, out string errorField, out string errorMessage))
+            {
+                MessageBox.Show(errorMessage, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                FocusField(errorField);
+                return;
+            }
+
+            if (FileHandler.IdExists(animal.AnimalID))
+            {
+                MessageBox.Show($"Animal ID {animal.AnimalID} already exists.", "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtAnimalId.Focus(); txtAnimalId.SelectAll();
+                return;
+            }
+
+            if (!FileHandler.TryAppendAnimal(animal, out string saveError))
+            {
+                MessageBox.Show(saveError, "Could not save", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show($"{animal.AnimalID} added.\nStatus: {animal.Status}\nHousing Unit: {animal.HousingUnit}",
+                "Animal added", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //RefreshGrid();   // Feature 2's method!!!!!!!!!!!!!!!!!!!!!!NBBBBBB
+            ClearInputs();   // empties the five boxes
+        }
+
+        // Moves the cursor back to the box that failed validation.
+        private void FocusField(string fieldName)
+        {
+            TextBox target;
+            switch (fieldName)
+            {
+                case "Animal ID": target = txtAnimalId; break;
+                case "Name": target = txtName; break;
+                case "Species": target = txtSpecies; break;
+                case "Age": target = txtAge; break;
+                default: target = txtRecoveryScore; break;
+            }
+            target.Focus();
+            target.SelectAll();
+        }
     }
 }
 
