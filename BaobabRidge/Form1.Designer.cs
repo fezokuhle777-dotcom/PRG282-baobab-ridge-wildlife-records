@@ -35,7 +35,7 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtAnimalId = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
-            this.btnSaveChanges = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lblRecoveryScore = new System.Windows.Forms.Label();
             this.lblAge = new System.Windows.Forms.Label();
@@ -81,7 +81,7 @@
             this.grpAnimalDetails.Controls.Add(this.txtName);
             this.grpAnimalDetails.Controls.Add(this.txtAnimalId);
             this.grpAnimalDetails.Controls.Add(this.btnClear);
-            this.grpAnimalDetails.Controls.Add(this.btnSaveChanges);
+            this.grpAnimalDetails.Controls.Add(this.btnSave);
             this.grpAnimalDetails.Controls.Add(this.btnAdd);
             this.grpAnimalDetails.Controls.Add(this.lblRecoveryScore);
             this.grpAnimalDetails.Controls.Add(this.lblAge);
@@ -141,15 +141,15 @@
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
             // 
-            // btnSaveChanges
+            // btnSave
             // 
-            this.btnSaveChanges.Enabled = false;
-            this.btnSaveChanges.Location = new System.Drawing.Point(260, 229);
-            this.btnSaveChanges.Name = "btnSaveChanges";
-            this.btnSaveChanges.Size = new System.Drawing.Size(176, 48);
-            this.btnSaveChanges.TabIndex = 6;
-            this.btnSaveChanges.Text = "Save Changes";
-            this.btnSaveChanges.UseVisualStyleBackColor = true;
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(260, 229);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(176, 48);
+            this.btnSave.TabIndex = 6;
+            this.btnSave.Text = "Save Changes";
+            this.btnSave.UseVisualStyleBackColor = true;
             // 
             // btnAdd
             // 
@@ -491,7 +491,7 @@
         private System.Windows.Forms.GroupBox grpSummaryReport;
         private System.Windows.Forms.DataGridView dgvAnimals;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnSaveChanges;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label lblRecoveryScore;
         private System.Windows.Forms.Label lblAge;

@@ -229,7 +229,7 @@ namespace BaobabRidge
         // Searches for an animal by ID.
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string id = txtSearch.Text.Trim();
+            string id = txtSearchId.Text.Trim();
 
             if (id.Length == 0)
             {
