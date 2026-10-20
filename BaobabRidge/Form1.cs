@@ -589,7 +589,12 @@ namespace BaobabRidge
 
         private void btnGenerateSummary_Click(object sender, EventArgs e)
         {
-            List<Animal> animals = FileHandler.LoadAnimals(out int skipped);   // use your teammate's actual signature
+            List<Animal> animals = FileHandler.LoadAnimals(out int skipped, out string loadError);
+            if (animals == null)
+            {
+                MessageBox.Show(loadError, "Could not read animals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             SummaryReport report = SummaryReport.Create(animals);
 
             lblTotalValue.Text = report.Total.ToString();
@@ -607,5 +612,5 @@ namespace BaobabRidge
                 MessageBox.Show("Summary saved to summary.txt.", "Summary", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
-    }
+    
 }

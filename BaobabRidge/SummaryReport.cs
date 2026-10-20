@@ -35,9 +35,8 @@ namespace BaobabRidge
                 if (report.StatusCounts.ContainsKey(a.Status)) report.StatusCounts[a.Status]++;
             return report;
         }
-    }
 
-    // Builds the text for summary.txt in the layout required by Section 5.2.
+        // Builds the text for summary.txt in the layout required by Section 5.2.
         public string ToReportText(DateTime generatedAt)
         {
             string rule = new string('-', 40);
@@ -56,3 +55,4 @@ namespace BaobabRidge
             return sb.ToString();
         }
     }
+}

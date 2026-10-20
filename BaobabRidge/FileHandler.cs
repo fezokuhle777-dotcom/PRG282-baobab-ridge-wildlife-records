@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BaobabRidge
@@ -69,6 +70,55 @@ namespace BaobabRidge
             catch (DirectoryNotFoundException) { errorMessage = "The folder for summary.txt could not be found."; }
             catch (IOException) { errorMessage = "summary.txt is in use by another program. Close it and try again."; }
             return false;
+        }
+
+        // Reads animals.txt and returns every valid record. Malformed lines are skipped
+        // and counted. Returns null (with a message) if the file cannot be read.
+        public static List<Animal> LoadAnimals(out int skipped, out string errorMessage)
+        {
+            skipped = 0;
+            errorMessage = "";
+            var animals = new List<Animal>();
+
+            try
+            {
+                if (!File.Exists(AnimalsPath)) return animals;   // a missing file means no animals, not an error
+
+                foreach (string line in File.ReadAllLines(AnimalsPath))
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;   // blank lines are ignored, not counted as skipped
+
+                    string[] parts = line.Split('|');
+                    int age, score;
+
+                    // Must have 7 fields, a valid ID and numeric age and score.
+                    if (parts.Length != 7
+                        || !Regex.IsMatch(parts[0].Trim(), "^WR-[0-9]{4}$")
+                        || !int.TryParse(parts[3].Trim(), out age)
+                        || !int.TryParse(parts[4].Trim(), out score))
+                    {
+                        skipped++;
+                        continue;
+                    }
+
+                    animals.Add(new Animal
+                    {
+                        AnimalID = parts[0].Trim(),
+                        Name = parts[1].Trim(),
+                        Species = parts[2].Trim(),
+                        Age = age,
+                        RecoveryScore = score,
+                        Status = parts[5].Trim(),
+                        HousingUnit = parts[6].Trim()
+                    });
+                }
+                return animals;
+            }
+            catch (UnauthorizedAccessException)
+            { errorMessage = "The animals file could not be read: permission denied."; }
+            catch (IOException)
+            { errorMessage = "The animals file is in use by another program. Close it and try again."; }
+            return null;
         }
     }
 }
