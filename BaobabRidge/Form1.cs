@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +14,7 @@ namespace BaobabRidge
             Path.Combine(AppContext.BaseDirectory, "animals.txt");
 
         // Null means Add mode. Otherwise, the ID of the animal being edited.
-        private string? editingId = null;
+        private string editingId = null;
 
         public Form1()
         {
@@ -67,6 +66,7 @@ namespace BaobabRidge
         }
 
         // Reads animal records from animals.txt.
+        // 5. File reading method
         private List<Animal> ReadAnimals(out int skippedLines)
         {
             List<Animal> animals = new List<Animal>();
@@ -125,6 +125,7 @@ namespace BaobabRidge
         }
 
         // Loads animal records into the DataGridView.
+        // 6. Grid loading method
         public void LoadAnimals()
         {
             try
@@ -191,7 +192,7 @@ namespace BaobabRidge
             txtAnimalId.Focus();
         }
 
-        // Retained because the existing Delete and Add code uses this method.
+        // Retained in case other code still calls this method.
         private void ClearInputs()
         {
             ClearForm();
@@ -213,7 +214,7 @@ namespace BaobabRidge
 
         // Loads an animal when the user clicks a row.
         private void dgvAnimals_CellClick(
-            object? sender, DataGridViewCellEventArgs e)
+            object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
@@ -241,7 +242,7 @@ namespace BaobabRidge
             {
                 List<Animal> animals = ReadAnimals(out _);
 
-                Animal? match = animals.FirstOrDefault(a =>
+                Animal match = animals.FirstOrDefault(a =>
                     a.AnimalID.Equals(
                         id, StringComparison.OrdinalIgnoreCase));
 
@@ -362,7 +363,7 @@ namespace BaobabRidge
         }
 
         // Updates the selected animal.
-        private void btnSave_Click(object? sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             if (editingId == null)
             {
@@ -442,8 +443,8 @@ namespace BaobabRidge
                 // Write the updated records to a temporary file.
                 File.WriteAllLines(tempPath, lines, Encoding.UTF8);
 
-                // Replace the original file with the updated file.
-                File.Move(tempPath, filePath, true);
+                // Swap the temporary file in for the original.
+                File.Replace(tempPath, filePath, null);
             }
             catch (UnauthorizedAccessException)
             {
@@ -488,7 +489,7 @@ namespace BaobabRidge
         }
 
         // Clear button.
-        private void btnClear_Click(object? sender, EventArgs e)
+        private void btnClear_Click(object sender, EventArgs e)
         {
             ClearForm();
         }
@@ -536,6 +537,8 @@ namespace BaobabRidge
 
                 File.WriteAllLines(filePath, lines, Encoding.UTF8);
 
+                // If the deleted animal is the one being edited,
+                // leave edit mode and clear the form.
                 if (editingId != null &&
                     editingId.Equals(
                         animalID, StringComparison.OrdinalIgnoreCase))

@@ -1,4 +1,3 @@
-
 namespace BaobabRidge
 {
     public class Animal
@@ -23,5 +22,11 @@ namespace BaobabRidge
 
         // Housing unit assigned to the animal
         public string HousingUnit { get; set; } = "";
+
+        // Converts the animal into one separated line for animals.txt.
+        public string ToFileLine()
+        {
+            return string.Join("|", AnimalID, Name, Species, Age, RecoveryScore, Status, HousingUnit);
+        }
     }
 }
