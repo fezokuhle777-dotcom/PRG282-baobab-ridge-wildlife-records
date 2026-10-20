@@ -36,4 +36,23 @@ namespace BaobabRidge
             return report;
         }
     }
-}
+
+    // Builds the text for summary.txt in the layout required by Section 5.2.
+        public string ToReportText(DateTime generatedAt)
+        {
+            string rule = new string('-', 40);
+            var sb = new StringBuilder();
+            sb.AppendLine("BAOBAB RIDGE WILDLIFE REHABILITATION CENTRE");
+            sb.AppendLine("ANIMAL SUMMARY REPORT");
+            sb.AppendLine("Generated: " + generatedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture));
+            sb.AppendLine(rule);
+            sb.AppendLine("Total animals:".PadRight(26) + Total);
+            sb.AppendLine("Average age (years):".PadRight(26) + AverageAgeText);
+            sb.AppendLine("Average recovery score:".PadRight(26) + AverageScoreText);
+            sb.AppendLine(rule);
+            sb.AppendLine("Animals per status:");
+            foreach (string status in StatusOrder)
+                sb.AppendLine(("  " + status + ":").PadRight(26) + StatusCounts[status]);
+            return sb.ToString();
+        }
+    }

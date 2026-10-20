@@ -353,6 +353,7 @@
             this.btnGenerateSummary.TabIndex = 8;
             this.btnGenerateSummary.Text = "Generate Summary";
             this.btnGenerateSummary.UseVisualStyleBackColor = true;
+            this.btnGenerateSummary.Click += new System.EventHandler(this.btnGenerateSummary_Click);
             // 
             // lblCritical
             // 

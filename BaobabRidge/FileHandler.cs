@@ -54,5 +54,21 @@ namespace BaobabRidge
             { errorMessage = "The animals file is in use by another program. Close it and try again."; }
             return false;
         }
+
+        // Overwrites summary.txt (beside the .exe) with the report text.
+        public static bool TryWriteSummary(string text, out string errorMessage)
+        {
+            errorMessage = "";
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "summary.txt");
+                File.WriteAllText(path, text);   // WriteAllText overwrites; it never appends
+                return true;
+            }
+            catch (UnauthorizedAccessException) { errorMessage = "summary.txt could not be written: permission denied."; }
+            catch (DirectoryNotFoundException) { errorMessage = "The folder for summary.txt could not be found."; }
+            catch (IOException) { errorMessage = "summary.txt is in use by another program. Close it and try again."; }
+            return false;
+        }
     }
 }
