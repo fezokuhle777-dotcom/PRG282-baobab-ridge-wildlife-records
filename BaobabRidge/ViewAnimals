@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+
+namespace BaobabRidge
+{
+    internal class AnimalsView
+    {
+        // Displays all animals from the text file.
+        private void ViewAnimals()
+        {
+
+            try
+            {
+                string path = Path.Combine(
+                    AppContext.BaseDirectory, "animals.txt");
+
+                // Create file if it does not exist
+                if (!File.Exists(path))
+                    File.WriteAllText(path, "");
+
+                DataTable table = new DataTable();
+
+                table.Columns.Add("Animal ID");
+                table.Columns.Add("Name");
+                table.Columns.Add("Species");
+                table.Columns.Add("Age");
+                table.Columns.Add("Recovery Score");
+
+
+                foreach (string line in File.ReadAllLines(path))
+                {
+                    string[] animal = line.Split('|');
+
+                    if (animal.Length == 7)
+                    {
+                        table.Rows.Add(animal);
+                    }
+                }
+
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Error reading the animal file.");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Access to the animal file was denied.");
+            }
+        }
+    }
+}
