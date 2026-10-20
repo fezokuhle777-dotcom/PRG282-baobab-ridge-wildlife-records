@@ -586,5 +586,31 @@ namespace BaobabRidge
 
             DeleteAnimal(id, name);
         }
+
+        private void btnGenerateSummary_Click(object sender, EventArgs e)
+        {
+            List<Animal> animals = FileHandler.LoadAnimals(out int skipped, out string loadError);
+            if (animals == null)
+            {
+                MessageBox.Show(loadError, "Could not read animals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SummaryReport report = SummaryReport.Create(animals);
+
+            lblTotalValue.Text = report.Total.ToString();
+            lblAverageAgeValue.Text = report.AverageAgeText;
+            lblAverageScoreValue.Text = report.AverageScoreText;
+            lblCriticalValue.Text = report.StatusCounts["Critical"].ToString();
+            lblSeriousValue.Text = report.StatusCounts["Serious"].ToString();
+            lblStableValue.Text = report.StatusCounts["Stable"].ToString();
+            lblRecoveringValue.Text = report.StatusCounts["Recovering"].ToString();
+            lblReleaseReadyValue.Text = report.StatusCounts["Release-Ready"].ToString();
+
+            if (!FileHandler.TryWriteSummary(report.ToReportText(DateTime.Now), out string error))
+                MessageBox.Show(error, "Could not save summary", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
+                MessageBox.Show("Summary saved to summary.txt.", "Summary", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
+    
 }
