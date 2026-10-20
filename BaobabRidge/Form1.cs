@@ -1,31 +1,35 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BaobabRidge
 {
     public partial class Form1 : Form
     {
-        
+        private readonly string filePath =
+            Path.Combine(AppContext.BaseDirectory, "animals.txt");
+
+        // Null means Add mode. Otherwise, the ID of the animal being edited.
+        private string editingId = null;
+
         public Form1()
         {
             InitializeComponent();
 
             SetupAnimalGrid();
             LoadAnimals();
+
+            dgvAnimals.CellClick += dgvAnimals_CellClick;
+            btnSave.Click += btnSave_Click;
+            btnClear.Click += btnClear_Click;
+
+            // Start in Add mode.
+            SetEditMode(false);
         }
-
-
-        private readonly string filePath =
-        Path.Combine(AppContext.BaseDirectory, "animals.txt");
 
         // Configures the grid columns and prevents direct editing.
         private void SetupAnimalGrid()
@@ -61,6 +65,7 @@ namespace BaobabRidge
             });
         }
 
+        // Reads animal records from animals.txt.
         // 5. File reading method
         private List<Animal> ReadAnimals(out int skippedLines)
         {
@@ -73,8 +78,7 @@ namespace BaobabRidge
                 return animals;
             }
 
-            string[] lines = File.ReadAllLines(
-                filePath, Encoding.UTF8);
+            string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
 
             foreach (string line in lines)
             {
@@ -120,6 +124,7 @@ namespace BaobabRidge
             return animals;
         }
 
+        // Loads animal records into the DataGridView.
         // 6. Grid loading method
         public void LoadAnimals()
         {
@@ -130,7 +135,6 @@ namespace BaobabRidge
                 List<Animal> animals =
                     ReadAnimals(out skippedLines);
 
-                // Clear the old data before displaying new records.
                 dgvAnimals.DataSource = null;
                 dgvAnimals.DataSource = animals;
 
@@ -164,6 +168,338 @@ namespace BaobabRidge
                     MessageBoxIcon.Error);
             }
         }
+
+        // Controls which buttons and fields are enabled.
+        private void SetEditMode(bool edit)
+        {
+            txtAnimalId.ReadOnly = edit;
+            btnAdd.Enabled = !edit;
+            btnSave.Enabled = edit;
+        }
+
+        // Clears the form and returns to Add mode.
+        private void ClearForm()
+        {
+            editingId = null;
+
+            txtAnimalId.Clear();
+            txtName.Clear();
+            txtSpecies.Clear();
+            txtAge.Clear();
+            txtRecoveryScore.Clear();
+
+            SetEditMode(false);
+            txtAnimalId.Focus();
+        }
+
+        // Retained in case other code still calls this method.
+        private void ClearInputs()
+        {
+            ClearForm();
+        }
+
+        // Loads the selected animal into the form for editing.
+        private void LoadForEdit(Animal a)
+        {
+            editingId = a.AnimalID;
+
+            txtAnimalId.Text = a.AnimalID;
+            txtName.Text = a.Name;
+            txtSpecies.Text = a.Species;
+            txtAge.Text = a.Age.ToString();
+            txtRecoveryScore.Text = a.RecoveryScore.ToString();
+
+            SetEditMode(true);
+        }
+
+        // Loads an animal when the user clicks a row.
+        private void dgvAnimals_CellClick(
+            object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            if (dgvAnimals.Rows[e.RowIndex].DataBoundItem
+                is Animal a)
+            {
+                LoadForEdit(a);
+            }
+        }
+
+        // Searches for an animal by ID.
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            string id = txtSearch.Text.Trim();
+
+            if (id.Length == 0)
+            {
+                MessageBox.Show(
+                    "Please enter an Animal ID to search for.");
+                return;
+            }
+
+            try
+            {
+                List<Animal> animals = ReadAnimals(out _);
+
+                Animal match = animals.FirstOrDefault(a =>
+                    a.AnimalID.Equals(
+                        id, StringComparison.OrdinalIgnoreCase));
+
+                if (match == null)
+                {
+                    MessageBox.Show(
+                        "No animal found with ID \"" + id + "\".",
+                        "Not Found",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    return;
+                }
+
+                LoadForEdit(match);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Permission denied.");
+            }
+            catch (IOException)
+            {
+                MessageBox.Show(
+                    "Unable to read animals.txt. The file may be in use.");
+            }
+        }
+
+        // Adds a new animal.
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (!AnimalValidator.TryCreateAnimal(
+                txtAnimalId.Text,
+                txtName.Text,
+                txtSpecies.Text,
+                txtAge.Text,
+                txtRecoveryScore.Text,
+                out Animal animal,
+                out string errorField,
+                out string errorMessage))
+            {
+                MessageBox.Show(
+                    errorMessage,
+                    "Invalid input",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                FocusField(errorField);
+                return;
+            }
+
+            if (FileHandler.IdExists(animal.AnimalID))
+            {
+                MessageBox.Show(
+                    $"Animal ID {animal.AnimalID} already exists.",
+                    "Duplicate ID",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtAnimalId.Focus();
+                txtAnimalId.SelectAll();
+                return;
+            }
+
+            if (!FileHandler.TryAppendAnimal(
+                animal, out string saveError))
+            {
+                MessageBox.Show(
+                    saveError,
+                    "Could not save",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
+
+            MessageBox.Show(
+                $"{animal.AnimalID} added.\n" +
+                $"Status: {animal.Status}\n" +
+                $"Housing Unit: {animal.HousingUnit}",
+                "Animal added",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            LoadAnimals();
+            ClearForm();
+        }
+
+        // Moves the cursor to the field that failed validation.
+        private void FocusField(string fieldName)
+        {
+            TextBox target;
+
+            switch (fieldName)
+            {
+                case "Animal ID":
+                    target = txtAnimalId;
+                    break;
+
+                case "Name":
+                    target = txtName;
+                    break;
+
+                case "Species":
+                    target = txtSpecies;
+                    break;
+
+                case "Age":
+                    target = txtAge;
+                    break;
+
+                default:
+                    target = txtRecoveryScore;
+                    break;
+            }
+
+            target.Focus();
+            target.SelectAll();
+        }
+
+        // Updates the selected animal.
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (editingId == null)
+            {
+                MessageBox.Show(
+                    "Please select an animal to update.");
+                return;
+            }
+
+            // Use the same validation rules as Add.
+            if (!AnimalValidator.TryCreateAnimal(
+                txtAnimalId.Text,
+                txtName.Text,
+                txtSpecies.Text,
+                txtAge.Text,
+                txtRecoveryScore.Text,
+                out Animal animal,
+                out string errorField,
+                out string errorMessage))
+            {
+                MessageBox.Show(
+                    errorMessage,
+                    "Validation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                FocusField(errorField);
+                return;
+            }
+
+            // Keep the original ID and use the validated animal details.
+            string newLine = string.Join("|",
+                editingId,
+                animal.Name,
+                animal.Species,
+                animal.Age,
+                animal.RecoveryScore,
+                animal.Status,
+                animal.HousingUnit);
+
+            string tempPath = filePath + ".tmp";
+
+            try
+            {
+                string[] lines =
+                    File.ReadAllLines(filePath, Encoding.UTF8);
+
+                int index = -1;
+
+                // Find the existing record.
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] fields = lines[i].Split('|');
+
+                    if (fields.Length > 0 &&
+                        fields[0].Trim().Equals(
+                            editingId,
+                            StringComparison.OrdinalIgnoreCase))
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index == -1)
+                {
+                    MessageBox.Show(
+                        "This animal no longer exists in the file.");
+
+                    LoadAnimals();
+                    ClearForm();
+                    return;
+                }
+
+                // Replace only the selected record.
+                lines[index] = newLine;
+
+                // Write the updated records to a temporary file.
+                File.WriteAllLines(tempPath, lines, Encoding.UTF8);
+
+                // Swap the temporary file in for the original.
+                File.Replace(tempPath, filePath, null);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show(
+                    "Permission denied when saving animals.txt.");
+                return;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show(
+                    "Animals.txt could not be read or saved. " +
+                    "The file may be in use.");
+
+                return;
+            }
+            finally
+            {
+                // Remove a leftover temporary file if one exists.
+                try
+                {
+                    if (File.Exists(tempPath))
+                        File.Delete(tempPath);
+                }
+                catch (IOException)
+                {
+                    // The next save can handle the leftover file.
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // Do not hide the original operation's result.
+                }
+            }
+
+            MessageBox.Show(
+                "Animal updated successfully.",
+                "Update Successful",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            LoadAnimals();
+            ClearForm();
+        }
+
+        // Clear button.
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
+
+        // Refresh button.
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadAnimals();
+        }
+
         // Deletes the selected animal from the file.
         public void DeleteAnimal(string animalID, string animalName)
         {
@@ -174,15 +510,23 @@ namespace BaobabRidge
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (answer != DialogResult.Yes) return;
+            if (answer != DialogResult.Yes)
+                return;
 
             try
             {
-                List<string> lines = File.ReadAllLines(filePath, Encoding.UTF8).ToList();
+                List<string> lines =
+                    File.ReadAllLines(filePath, Encoding.UTF8).ToList();
 
                 int removed = lines.RemoveAll(line =>
-                    line.Split('|')[0].Trim().Equals(
-                        animalID, StringComparison.OrdinalIgnoreCase));
+                {
+                    string[] fields = line.Split('|');
+
+                    return fields.Length > 0 &&
+                        fields[0].Trim().Equals(
+                            animalID,
+                            StringComparison.OrdinalIgnoreCase);
+                });
 
                 if (removed == 0)
                 {
@@ -193,41 +537,30 @@ namespace BaobabRidge
 
                 File.WriteAllLines(filePath, lines, Encoding.UTF8);
 
-                if (txtAnimalId.Text.Trim().Equals(
-                    animalID, StringComparison.OrdinalIgnoreCase))
+                // If the deleted animal is the one being edited,
+                // leave edit mode and clear the form.
+                if (editingId != null &&
+                    editingId.Equals(
+                        animalID, StringComparison.OrdinalIgnoreCase))
                 {
-                    ClearInputs();
+                    ClearForm();
                 }
 
                 LoadAnimals();
 
-                MessageBox.Show("Animal deleted successfully.");
+                MessageBox.Show(
+                    "Animal deleted successfully.");
             }
             catch (IOException)
             {
-                MessageBox.Show("Animals.txt could not be read or saved. The file may be open in another program.");
+                MessageBox.Show(
+                    "Animals.txt could not be read or saved. " +
+                    "The file may be open in another program.");
             }
             catch (UnauthorizedAccessException)
             {
                 MessageBox.Show("Permission denied.");
             }
-        }
-
-        // Empties the five input boxes and puts the cursor back in the Animal ID box.
-        private void ClearInputs()
-        {
-            txtAnimalId.Clear();
-            txtName.Clear();
-            txtSpecies.Clear();
-            txtAge.Clear();
-            txtRecoveryScore.Clear();
-            txtAnimalId.Focus();
-        }
-
-        // Refreshes the animal grid.
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            LoadAnimals();
         }
 
         // Deletes the selected animal after confirmation.
@@ -240,61 +573,18 @@ namespace BaobabRidge
             }
 
             string id = dgvAnimals.SelectedRows[0]
-                .Cells["AnimalID"].Value.ToString();
+                .Cells["AnimalID"].Value?.ToString() ?? "";
 
             string name = dgvAnimals.SelectedRows[0]
-                .Cells["Name"].Value.ToString();
+                .Cells["Name"].Value?.ToString() ?? "";
+
+            if (id.Length == 0)
+            {
+                MessageBox.Show("The selected animal has no valid ID.");
+                return;
+            }
 
             DeleteAnimal(id, name);
         }
-
-        //validates the input and adds a new animal to the file.
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            if (!AnimalValidator.TryCreateAnimal(txtAnimalId.Text, txtName.Text, txtSpecies.Text,
-           txtAge.Text, txtRecoveryScore.Text,
-           out Animal animal, out string errorField, out string errorMessage))
-            {
-                MessageBox.Show(errorMessage, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                FocusField(errorField);
-                return;
-            }
-
-            if (FileHandler.IdExists(animal.AnimalID))
-            {
-                MessageBox.Show($"Animal ID {animal.AnimalID} already exists.", "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtAnimalId.Focus(); txtAnimalId.SelectAll();
-                return;
-            }
-
-            if (!FileHandler.TryAppendAnimal(animal, out string saveError))
-            {
-                MessageBox.Show(saveError, "Could not save", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            MessageBox.Show($"{animal.AnimalID} added.\nStatus: {animal.Status}\nHousing Unit: {animal.HousingUnit}",
-                "Animal added", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //RefreshGrid();   // Feature 2's method!!!!!!!!!!!!!!!!!!!!!!NBBBBBB
-            ClearInputs();   // empties the five boxes
-        }
-
-        // Moves the cursor back to the box that failed validation.
-        private void FocusField(string fieldName)
-        {
-            TextBox target;
-            switch (fieldName)
-            {
-                case "Animal ID": target = txtAnimalId; break;
-                case "Name": target = txtName; break;
-                case "Species": target = txtSpecies; break;
-                case "Age": target = txtAge; break;
-                default: target = txtRecoveryScore; break;
-            }
-            target.Focus();
-            target.SelectAll();
-        }
     }
 }
-
-
